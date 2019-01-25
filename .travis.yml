@@ -1,0 +1,10 @@
+os: windows
+language: csharp
+solution: .\src\stream-net\stream-net.sln
+
+install:
+  - dotnet restore .\src
+
+script:
+  - dotnet build .\src
+  - dotnet test .\src
