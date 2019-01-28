@@ -3,7 +3,6 @@ language: shell
 
 env:
   global:
-    - DEPLOY_VERSION=$TRAVIS_TAG
     - secure: iggJlcOL4PzoT+1CzaBaB1153d5Pj8UlGstinflBmurxz3arMBJ6kFSFvhZjl22GCwaiPDQt8VWV4uTfzFxrQoKGDZ2yu3fofR/HU+qX/Vy8lkXK98g0JJB30oM0aK2wwlbGgq/ddEBG6fqXxQt/SrfTmOu1cVSd31/w1hR5gP4=
 
 install:
@@ -14,7 +13,11 @@ script:
   - dotnet test src
 
 before_deploy:
-  - dotnet pack -c Release /p:PackageVersion=$DEPLOY_VERSION /p:Version=$DEPLOY_VERSION /p:AssemblyVersion=$DEPLOY_VERSION
+  - |-
+    if [ -z "$TRAVIS_TAG" ]; then
+      DEPLOY_VERSION=$TRAVIS_TAG
+      dotnet pack -c Release /p:PackageVersion=$DEPLOY_VERSION /p:Version=$DEPLOY_VERSION /p:AssemblyVersion=$DEPLOY_VERSION
+    fi
 
 deploy:
   skip_cleanup: true
